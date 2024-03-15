@@ -1,0 +1,6 @@
+tensorboardX
+opencv-python
+SimpleITK
+pydicom
+adabound
+matplotlib

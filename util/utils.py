@@ -170,12 +170,23 @@ def save_checkpoint(state, is_best, save):
         best_filename = os.path.join(save, 'model_best.pth.tar')
         shutil.copyfile(filename, best_filename)
 
+# For nvidia GPUs
+#def get_gpus_memory_info():
+#    """Get the maximum free usage memory of gpu"""
+#    rst = subprocess.run('nvidia-smi -q -d Memory',stdout=subprocess.PIPE, shell=True).stdout.decode('utf-8')
+#    rst = rst.strip().split('\n')
+#    memory_available = [int(line.split(':')[1].split(' ')[1]) for line in rst if 'Free' in line][::2]
+#    print("****** memory_available is ", memory_available)
+#    id = int(np.argmax(memory_available))
+#    return id, memory_available
+
+# For AMD GPUs
 def get_gpus_memory_info():
     """Get the maximum free usage memory of gpu"""
-    rst = subprocess.run('nvidia-smi -q -d Memory',stdout=subprocess.PIPE, shell=True).stdout.decode('utf-8')
+    rst = subprocess.run('rocm-smi --showmeminfo VRAM',stdout=subprocess.PIPE, shell=True).stdout.decode('utf-8')
     rst = rst.strip().split('\n')
-    memory_available = [int(line.split(':')[1].split(' ')[1]) for line in rst if 'Free' in line][::2]
-    id = int(np.argmax(memory_available))
+    memory_available = [int(line.split(':')[2].split(' ')[1]) for line in rst if 'Used Memory' in line]
+    id = int(np.argmin(memory_available))
     return id, memory_available
 
 def calc_parameters_count(model):

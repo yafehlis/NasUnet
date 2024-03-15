@@ -15,6 +15,7 @@ from util.datasets import get_dataset
 from util.utils import get_logger, save_checkpoint, calc_time, store_images
 from util.utils import  average_meter, weights_init
 from util.utils import get_gpus_memory_info, calc_parameters_count
+from util.utils import calc_parameters_count
 from util.schedulers import get_scheduler
 from util.optimizers import get_optimizer
 from util.challenge.promise12.store_test_seg import predict_test
@@ -49,7 +50,7 @@ class Network(object):
         self.args = parser.parse_args()
 
         with open(self.args.config) as fp:
-            self.cfg = yaml.load(fp)
+            self.cfg = yaml.safe_load(fp)
             print('load configure file at {}'.format(self.args.config))
         self.model_name = self.args.model
         print('Usage model :{}'.format(self.model_name))
