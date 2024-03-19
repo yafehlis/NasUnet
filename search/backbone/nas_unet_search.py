@@ -190,6 +190,7 @@ class NasUnetSearch(nn.Module):
 
         # replicate modules
         replicas = nn.parallel.replicate(self.net, self.device_ids)
+        # TODO right now I have a bug with multi-GPUs. Work around: export HIP_VISIBLE_DEVICES=3
         outputs = nn.parallel.parallel_apply(replicas, list(zip(xs, wnormal_down_copies, wnormal_up_copies,
                                                                 wdown_copies, wup_copies)),
                                                                 devices=self.device_ids)
