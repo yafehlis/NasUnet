@@ -2,9 +2,11 @@ import sys
 import os
 import platform
 import time
+
+sys.path.append('..')
 from util import visualize
 from util.utils import create_exp_dir
-import geno_searched
+from models import geno_searched
 
 def main(format='svg'):
 
@@ -20,9 +22,9 @@ def main(format='svg'):
     if 'Windows' in platform.platform():
         os.environ['PATH'] += os.pathsep + '../3rd_tools/graphviz-2.38/bin/'
     try:
-        genotype = eval('geno_types.{}'.format(genotype_name))
+        genotype = eval('geno_searched.{}'.format(genotype_name))
     except AttributeError:
-        print('{} is not specified in geno_types.py'.format(genotype_name))
+        print('{} is not specified in geno_searched.py'.format(genotype_name))
         sys.exit(1)
 
     visualize.plot(genotype.down, store_path+'/DownC', format=format)
