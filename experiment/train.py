@@ -159,7 +159,7 @@ class Network(object):
             model = nn.DataParallel(model)
         else:
             self.logger.info('gpu device = %d' % self.device_id)
-            torch.cuda.set_device(self.device_id)
+            torch.cuda.set_device(self.device_id) # comment: if I do 'export HIP_VISIBLE_DEVICES=0,1,2,3', this line does not give an error
         self.model = model.to(self.device)
         self.logger.info('param size = %fMB', calc_parameters_count(model))
 
